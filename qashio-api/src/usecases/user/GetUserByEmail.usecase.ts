@@ -1,6 +1,6 @@
 import { Users } from '@prisma/client'
-import { ILogger } from '../../domain/logger/logger.interface'
-import { UserRepositoryI } from '../../domain/repositories/userRepository.interface'
+import { ILogger } from '@domain/logger/logger.interface'
+import { UserRepositoryI } from '@domain/repositories/userRepository.interface'
 
 export class GetUserByEmail {
   constructor(

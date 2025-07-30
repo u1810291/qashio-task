@@ -1,11 +1,13 @@
 import { Users } from '@prisma/client'
 import { Injectable } from '@nestjs/common'
-import { PrismaRepository } from './prisma.repository'
-import { PrismaService } from '../config/prisma/prisma.service'
-import { BcryptService } from '../services/bcrypt/bcrypt.service'
-import { ExceptionsService } from '../exceptions/exceptions.service'
-import { UserRepositoryI } from '../../domain/repositories/userRepository.interface'
-// import { ConfigService } from '@nestjs/config'
+
+import { PrismaService } from '@config/prisma/prisma.service'
+import { UserRepositoryI } from '@domain/repositories/userRepository.interface'
+
+import { BcryptService } from '@infrastructure/services/bcrypt/bcrypt.service'
+import { PrismaRepository } from '@infrastructure/repositories/prisma.repository'
+import { ExceptionsService } from '@infrastructure/exceptions/exceptions.service'
+
 
 @Injectable()
 export class DatabaseUserRepository extends PrismaRepository<'users'> implements UserRepositoryI {

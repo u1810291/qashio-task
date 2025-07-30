@@ -1,5 +1,5 @@
 import { Users } from '@prisma/client'
-import { UserRepositoryI } from '../../domain/repositories/userRepository.interface'
+import { UserRepositoryI } from '@domain/repositories/userRepository.interface'
 
 export class IsAuthenticatedUseCases {
   constructor(private readonly adminUserRepo: UserRepositoryI) { }

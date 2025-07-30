@@ -1,11 +1,10 @@
+import { UserRepositoryI } from '@domain/repositories/userRepository.interface'
 import { Users } from '@prisma/client'
-import { DatabaseUserRepository } from 'src/infrastructure/repositories/user.repository'
 
 export class RegisterUseCases {
-  constructor(private readonly userRepository: DatabaseUserRepository) {}
+  constructor(private readonly userRepository: UserRepositoryI) { }
 
   async execute(user: Pick<Users, 'email' | 'name' | 'password'>): Promise<Users> {
-    const registered = await this.userRepository.register(user)
-    return registered
+    return this.userRepository.register(user)
   }
 }

@@ -1,14 +1,13 @@
 import { PrismaClient } from '@prisma/client'
-import { PrismaService } from '../config/prisma/prisma.service'
-import { PrismaRepositoryI } from 'src/domain/repositories/prismaRepository.interface'
+import { PrismaService } from '@config/prisma/prisma.service'
+import { PrismaRepositoryI } from '@domain/repositories/prismaRepository.interface'
 
 export class PrismaRepository<K extends Exclude<keyof PrismaClient, symbol | `$${string}`>>
-  implements PrismaRepositoryI<K>
-{
+  implements PrismaRepositoryI<K> {
   constructor(
     protected readonly prisma: PrismaService,
     private readonly model: K,
-  ) {}
+  ) { }
 
   aggregate(...args: Parameters<PrismaClient[K]['aggregate']>) {
     return (this.prisma[this.model].aggregate as any)(...args)

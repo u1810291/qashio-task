@@ -3,12 +3,14 @@ import { NestFactory } from '@nestjs/core'
 import * as cookieParser from 'cookie-parser'
 import { ValidationPipe, VersioningType } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { LoggerService } from './infrastructure/logger/logger.service'
-import { prismaInit } from './infrastructure/config/prisma/prisma.config'
-import { AllExceptionFilter } from './infrastructure/common/filter/exception.filter'
-import { LoggingInterceptor } from './infrastructure/common/interceptors/logger.interceptor'
-import { ResponseFormat, ResponseInterceptor } from './infrastructure/common/interceptors/response.interceptor'
-import { ValidatorConfig } from './infrastructure/config'
+
+import { prismaInit } from '@config/prisma/prisma.config'
+
+import { ValidatorConfig } from '@infrastructure/config'
+import { LoggerService } from '@infrastructure/logger/logger.service'
+import { AllExceptionFilter } from '@infrastructure/common/filter/exception.filter'
+import { LoggingInterceptor } from '@infrastructure/common/interceptors/logger.interceptor'
+import { ResponseFormat, ResponseInterceptor } from '@infrastructure/common/interceptors/response.interceptor'
 
 async function bootstrap() {
   const env = process.env.NODE_ENV

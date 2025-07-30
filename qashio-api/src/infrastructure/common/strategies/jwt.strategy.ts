@@ -1,12 +1,12 @@
+import { Request } from 'express'
+import { Symbols } from '@domain/symbols'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { PassportStrategy } from '@nestjs/passport'
 import { Inject, Injectable } from '@nestjs/common'
-import { Request } from 'express'
-import { UseCaseProxy } from '../../usecases-proxy/usecases-proxy'
-import { LoginUseCases } from '../../../usecases/auth/login.usecases'
-import { ExceptionsService } from '../../exceptions/exceptions.service'
-import { LoggerService } from '../../logger/logger.service'
-import { Symbols } from '../../../domain/symbols'
+import { LoginUseCases } from '@usecases/auth/login.usecases'
+import { LoggerService } from '@infrastructure/logger/logger.service'
+import { UseCaseProxy } from '@infrastructure/usecases-proxy/usecases-proxy'
+import { ExceptionsService } from '@infrastructure/exceptions/exceptions.service'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

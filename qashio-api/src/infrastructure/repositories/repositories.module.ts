@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common'
-import { DatabaseUserRepository } from './user.repository'
-import { PrismaModule } from '../config/prisma/prisma.module'
-import { PrismaRepository } from './prisma.repository'
-import { PrismaService } from '../config/prisma/prisma.service'
-import { ExceptionsService } from '../exceptions/exceptions.service'
-import { BcryptService } from '../services/bcrypt/bcrypt.service'
+import { PrismaModule } from '@config/prisma/prisma.module'
+import { PrismaService } from '@config/prisma/prisma.service'
+
+import { BcryptService } from '@infrastructure/services/bcrypt/bcrypt.service'
+import { PrismaRepository } from '@infrastructure/repositories/prisma.repository'
+import { ExceptionsService } from '@infrastructure/exceptions/exceptions.service'
+import { DatabaseUserRepository } from '@infrastructure/repositories/user.repository'
 
 @Module({
   imports: [PrismaModule],
@@ -21,4 +22,4 @@ import { BcryptService } from '../services/bcrypt/bcrypt.service'
   ],
   exports: [DatabaseUserRepository, PrismaRepository],
 })
-export class RepositoriesModule {}
+export class RepositoriesModule { }

@@ -1,9 +1,9 @@
 import { Users } from '@prisma/client'
-import { IBcryptService } from '../../domain/adapters/bcrypt.interface'
-import { IJwtService, IJwtServicePayload } from '../../domain/adapters/jwt.interface'
-import { JWTConfig } from '../../domain/config/jwt.interface'
-import { ILogger } from '../../domain/logger/logger.interface'
-import { UserRepositoryI } from '../../domain/repositories/userRepository.interface'
+import { JWTConfig } from '@domain/config/jwt.interface'
+import { ILogger } from '@domain/logger/logger.interface'
+import { IBcryptService } from '@domain/adapters/bcrypt.interface'
+import { UserRepositoryI } from '@domain/repositories/userRepository.interface'
+import { IJwtService, IJwtServicePayload } from '@domain/adapters/jwt.interface'
 
 export class LoginUseCases {
   constructor(
