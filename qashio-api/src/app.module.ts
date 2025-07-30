@@ -16,6 +16,9 @@ import { JwtModule as JwtServiceModule } from '@infrastructure/services/jwt/jwt.
 import { UseCasesProxyModule } from '@infrastructure/usecases-proxy/usecases-proxy.module'
 import { JwtRefreshTokenStrategy } from '@infrastructure/common/strategies/jwtRefresh.strategy'
 
+import { AuthUseCasesProxyModule } from '@usecases/auth/auth-usecases-proxy.module'
+import { UserUseCasesProxyModule } from '@usecases/user/user-usecase-proxy.module'
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,7 +31,9 @@ import { JwtRefreshTokenStrategy } from '@infrastructure/common/strategies/jwtRe
     }),
     LoggerModule,
     ExceptionsModule,
-    UseCasesProxyModule.register(),
+    AuthUseCasesProxyModule.register(),
+    UserUseCasesProxyModule.register(),
+    UseCasesProxyModule,
     ControllersModule,
     BcryptModule,
     JwtServiceModule,

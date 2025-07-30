@@ -9,12 +9,12 @@
     "target": "ES2023",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
-      "@domain/*": ["./src/domain/*"],
-      "@infrastructure/*": ["./src/infrastructure/*"],
-      "@usecases/*": ["./src/usecases/*"],
-      "@config/*": ["./src/infrastructure/config/*"]
+      "@domain/*": ["domain/*"],
+      "@infrastructure/*": ["infrastructure/*"],
+      "@usecases/*": ["usecases/*"],
+      "@config/*": ["infrastructure/config/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

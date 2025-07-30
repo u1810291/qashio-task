@@ -1,11 +1,11 @@
 import { DynamicModule, Module } from '@nestjs/common'
-import { JwtModule } from '@nestjs/jwt'
 import { UserRepositoryI } from '@domain/repositories/userRepository.interface'
 import { Symbols } from '@domain/symbols'
 
 import { EnvironmentConfigModule } from '@config/environment-config/environment-config.module'
 import { EnvironmentConfigService } from '@config/environment-config/environment-config.service'
 
+import { JwtModule } from '@infrastructure/services/jwt/jwt.module'
 import { LoggerModule } from '@infrastructure/logger/logger.module'
 import { LoggerService } from '@infrastructure/logger/logger.service'
 import { JwtTokenService } from '@infrastructure/services/jwt/jwt.service'
