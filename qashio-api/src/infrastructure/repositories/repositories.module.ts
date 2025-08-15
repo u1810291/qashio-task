@@ -10,7 +10,6 @@ import { DatabaseUserRepository } from '@infrastructure/repositories/user.reposi
 @Module({
   imports: [PrismaModule],
   providers: [
-    ExceptionsService,
     BcryptService,
     DatabaseUserRepository,
     PrismaRepository,
@@ -18,6 +17,11 @@ import { DatabaseUserRepository } from '@infrastructure/repositories/user.reposi
       provide: 'UserRepository',
       inject: [PrismaService],
       useFactory: (prismaService: PrismaService) => new PrismaRepository(prismaService, 'users'),
+    },
+    {
+      provide: 'TransactionRepository',
+      inject: [PrismaService],
+      useFactory: (prismaService: PrismaService) => new PrismaRepository(prismaService, "transaction"),
     },
   ],
   exports: [DatabaseUserRepository, PrismaRepository],

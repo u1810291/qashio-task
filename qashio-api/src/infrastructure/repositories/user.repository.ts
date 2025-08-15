@@ -2,18 +2,16 @@ import { Users } from '@prisma/client'
 import { Injectable } from '@nestjs/common'
 
 import { PrismaService } from '@config/prisma/prisma.service'
-import { UserRepositoryI } from '@domain/repositories/userRepository.interface'
+import { UserRepositoryI } from '@domain/repositories/user-repository.interface'
 
 import { BcryptService } from '@infrastructure/services/bcrypt/bcrypt.service'
 import { PrismaRepository } from '@infrastructure/repositories/prisma.repository'
-import { ExceptionsService } from '@infrastructure/exceptions/exceptions.service'
 
 
 @Injectable()
 export class DatabaseUserRepository extends PrismaRepository<'users'> implements UserRepositoryI {
   constructor(
     protected readonly prisma: PrismaService,
-    private readonly exceptionService: ExceptionsService,
     private readonly encrypt: BcryptService,
   ) {
     super(prisma, 'users')
@@ -47,19 +45,6 @@ export class DatabaseUserRepository extends PrismaRepository<'users'> implements
   }
 
   async register(user: Pick<Users, 'email' | 'name' | 'password'>): Promise<Users> {
-    const userExists = await this.findFirst({
-      where: {
-        email: user.email,
-      },
-    })
-
-    if (userExists) {
-      this.exceptionService.badRequestException({
-        code_error: 400,
-        message: 'User with this email is already exists',
-      })
-    }
-
     const password = await this.encrypt.hash(user.password)
 
     const userRegister = await this.create({

@@ -1,5 +1,5 @@
 import { DynamicModule, Module } from '@nestjs/common'
-import { UserRepositoryI } from '@domain/repositories/userRepository.interface'
+import { UserRepositoryI } from '@domain/repositories/user-repository.interface'
 import { Symbols } from '@domain/symbols'
 
 import { EnvironmentConfigModule } from '@config/environment-config/environment-config.module'
@@ -19,6 +19,7 @@ import { LoginUseCases } from '@usecases/auth/login.usecases'
 import { LogoutUseCases } from '@usecases/auth/logout.usecases'
 import { RegisterUseCases } from '@usecases/auth/register.usecases'
 import { IsAuthenticatedUseCases } from '@usecases/auth/is-authenticated.usecases'
+import { ExceptionsService } from '@infrastructure/exceptions/exceptions.service'
 
 @Module({
   imports: [LoggerModule, JwtModule, BcryptModule, EnvironmentConfigModule, RepositoriesModule],
@@ -47,7 +48,10 @@ export class AuthUseCasesProxyModule {
         {
           inject: [DatabaseUserRepository],
           provide: Symbols.REGISTER_USECASES_PROXY,
-          useFactory: (userRepo: UserRepositoryI) => new UseCaseProxy(new RegisterUseCases(userRepo)),
+          useFactory: (
+            userRepo: UserRepositoryI,
+            exceptionService: ExceptionsService
+          ) => new UseCaseProxy(new RegisterUseCases(userRepo, exceptionService)),
         },
         {
           inject: [DatabaseUserRepository],

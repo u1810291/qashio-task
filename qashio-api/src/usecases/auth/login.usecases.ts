@@ -2,7 +2,7 @@ import { Users } from '@prisma/client'
 import { JWTConfig } from '@domain/config/jwt.interface'
 import { ILogger } from '@domain/logger/logger.interface'
 import { IBcryptService } from '@domain/adapters/bcrypt.interface'
-import { UserRepositoryI } from '@domain/repositories/userRepository.interface'
+import { UserRepositoryI } from '@domain/repositories/user-repository.interface'
 import { IJwtService, IJwtServicePayload } from '@domain/adapters/jwt.interface'
 
 export class LoginUseCases {

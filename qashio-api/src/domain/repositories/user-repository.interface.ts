@@ -1,5 +1,5 @@
 import { Users } from '@prisma/client'
-import { PrismaRepositoryI } from './prismaRepository.interface'
+import { PrismaRepositoryI } from './prisma-repository.interface'
 
 export interface UserRepositoryI extends PrismaRepositoryI<'users'> {
   getUserByEmail(email: string): Promise<Users | null>
