@@ -6,27 +6,30 @@ import {
   UnauthorizedException,
   NotFoundException,
   ConflictException,
-} from '@nestjs/common'
-import { IException, IFormatExceptionMessage } from '@domain/exceptions/exceptions.interface'
+} from '@nestjs/common';
+import {
+  IException,
+  IFormatExceptionMessage,
+} from '@domain/exceptions/exceptions.interface';
 
 @Injectable()
 export class ExceptionsService implements IException {
   BadRequestException(data: IFormatExceptionMessage): void {
-    throw new BadRequestException(data)
+    throw new BadRequestException(data);
   }
   InternalServerErrorException(data?: IFormatExceptionMessage): void {
-    throw new InternalServerErrorException(data)
+    throw new InternalServerErrorException(data);
   }
   ForbiddenException(data?: IFormatExceptionMessage): void {
-    throw new ForbiddenException(data)
+    throw new ForbiddenException(data);
   }
   UnauthorizedException(data?: IFormatExceptionMessage): void {
-    throw new UnauthorizedException(data)
+    throw new UnauthorizedException(data);
   }
   NotFoundException(data?: IFormatExceptionMessage): void {
-    throw new NotFoundException(data)
+    throw new NotFoundException(data);
   }
   ConflictException(data?: IFormatExceptionMessage): void {
-    throw new ConflictException(data)
+    throw new ConflictException(data);
   }
 }

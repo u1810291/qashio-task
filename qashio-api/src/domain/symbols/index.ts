@@ -5,8 +5,14 @@ export const Symbols = {
   IS_AUTHENTICATED_USECASES_PROXY: Symbol.for('IsAuthenticatedUseCasesProxy'),
   GET_USER_BY_EMAIL_USECASES_PROXY: Symbol.for('GetUserByEmailUseCasesProxy'),
 
-  CREATE_TRANSACTION_USECASES_PROXY: Symbol.for('CreateTransactionUseCasesProxy'),
+  CREATE_TRANSACTION_USECASES_PROXY: Symbol.for(
+    'CreateTransactionUseCasesProxy',
+  ),
   READ_TRANSACTION_USECASES_PROXY: Symbol.for('ReadTransactionUseCasesProxy'),
-  UPDATE_TRANSACTION_USECASES_PROXY: Symbol.for('UpdateTransactionUseCasesProxy'),
-  DELETE_TRANSACTION_USECASES_PROXY: Symbol.for('DeleteTransactionUseCasesProxy'),
-}
+  UPDATE_TRANSACTION_USECASES_PROXY: Symbol.for(
+    'UpdateTransactionUseCasesProxy',
+  ),
+  DELETE_TRANSACTION_USECASES_PROXY: Symbol.for(
+    'DeleteTransactionUseCasesProxy',
+  ),
+};

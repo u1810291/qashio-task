@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common'
-import { PrismaModule } from '@config/prisma/prisma.module'
-import { PrismaService } from '@config/prisma/prisma.service'
+import { Module } from '@nestjs/common';
+import { PrismaModule } from '@config/prisma/prisma.module';
+import { PrismaService } from '@config/prisma/prisma.service';
 
-import { BcryptService } from '@infrastructure/services/bcrypt/bcrypt.service'
-import { PrismaRepository } from '@infrastructure/repositories/prisma.repository'
-import { ExceptionsService } from '@infrastructure/exceptions/exceptions.service'
-import { DatabaseUserRepository } from '@infrastructure/repositories/user.repository'
+import { BcryptService } from '@infrastructure/services/bcrypt/bcrypt.service';
+import { PrismaRepository } from '@infrastructure/repositories/prisma.repository';
+import { ExceptionsService } from '@infrastructure/exceptions/exceptions.service';
+import { DatabaseUserRepository } from '@infrastructure/repositories/user.repository';
 
 @Module({
   imports: [PrismaModule],
@@ -16,14 +16,16 @@ import { DatabaseUserRepository } from '@infrastructure/repositories/user.reposi
     {
       provide: 'UserRepository',
       inject: [PrismaService],
-      useFactory: (prismaService: PrismaService) => new PrismaRepository(prismaService, 'users'),
+      useFactory: (prismaService: PrismaService) =>
+        new PrismaRepository(prismaService, 'users'),
     },
     {
       provide: 'TransactionRepository',
       inject: [PrismaService],
-      useFactory: (prismaService: PrismaService) => new PrismaRepository(prismaService, "transaction"),
+      useFactory: (prismaService: PrismaService) =>
+        new PrismaRepository(prismaService, 'transaction'),
     },
   ],
   exports: [DatabaseUserRepository, PrismaRepository],
 })
-export class RepositoriesModule { }
+export class RepositoriesModule {}

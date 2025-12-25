@@ -17,13 +17,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { IsAuthPresenter } from './auth.presenter';
-import { AuthLoginDto } from './validators/auth-dto.class';
-import { RegisterDto } from './validators/register-dto.class';
-
 import { Symbols } from '@domain/symbols';
 
-// import { LoginGuard } from '@infrastructure/common/guards/login.guard'
+import { LoginGuard } from '@infrastructure/common/guards/login.guard';
 import { JwtAuthGuard } from '@infrastructure/common/guards/jwtAuth.guard';
 import JwtRefreshGuard from '@infrastructure/common/guards/jwtRefresh.guard';
 import { UseCaseProxy } from '@infrastructure/usecases-proxy/usecases-proxy';
@@ -33,10 +29,15 @@ import { LoginUseCases } from '@usecases/auth/login.usecases';
 import { LogoutUseCases } from '@usecases/auth/logout.usecases';
 import { RegisterUseCases } from '@usecases/auth/register.usecases';
 import { IsAuthenticatedUseCases } from '@usecases/auth/is-authenticated.usecases';
+import { CreateTransactionUsecase } from '@usecases/transactions/create-transaction.usecases';
+import { TransactionsDto } from './validators/transactions-dto.class';
+import { IsAuthPresenter } from '../auth/auth.presenter';
+import { AuthLoginDto } from '../auth/validators/auth-dto.class';
+import { RegisterDto } from '../auth/validators/register-dto.class';
 
 @Controller({
   version: '1',
-  path: 'auth',
+  path: 'transactions',
 })
 @ApiTags('auth')
 @ApiResponse({
@@ -44,11 +45,11 @@ import { IsAuthenticatedUseCases } from '@usecases/auth/is-authenticated.usecase
   description: 'No authorization token was found',
 })
 @ApiResponse({ status: 500, description: 'Internal error' })
-@ApiExtraModels(IsAuthPresenter)
+// @ApiExtraModels(IsAuthPresenter)
 export class AuthController {
   constructor(
-    @Inject(Symbols.LOGIN_USECASES_PROXY)
-    private readonly loginUseCaseProxy: UseCaseProxy<LoginUseCases>,
+    @Inject(Symbols.CREATE_TRANSACTION_USECASES_PROXY)
+    private readonly createTransactionUseCaseProxy: UseCaseProxy<CreateTransactionUsecase>,
     @Inject(Symbols.LOGOUT_USECASES_PROXY)
     private readonly logoutUseCaseProxy: UseCaseProxy<LogoutUseCases>,
     @Inject(Symbols.IS_AUTHENTICATED_USECASES_PROXY)
@@ -57,22 +58,13 @@ export class AuthController {
     private readonly registerUseCaseProxy: UseCaseProxy<RegisterUseCases>,
   ) {}
 
-  @Post('login')
+  @Post('create')
   @ApiBearerAuth()
-  @ApiBody({ type: AuthLoginDto })
-  @ApiOperation({ description: 'login' })
-  async login(@Body() auth: AuthLoginDto, @Request() request: any) {
-    const accessTokenCookie = await this.loginUseCaseProxy
-      .getInstance()
-      .getCookieWithJwtToken(auth.email);
-    const refreshTokenCookie = await this.loginUseCaseProxy
-      .getInstance()
-      .getCookieWithJwtRefreshToken(auth.email);
-    request.res.setHeader('Set-Cookie', [
-      accessTokenCookie,
-      refreshTokenCookie,
-    ]);
-    return 'Login successful';
+  @ApiBody({ type: TransactionsDto })
+  @ApiOperation({ description: 'create' })
+  async login(@Body() data: TransactionsDto) {
+    // const create = await this.createTransactionUseCaseProxy.getInstance().execute(data)
+    return null;
   }
 
   @Post('logout')
@@ -98,33 +90,24 @@ export class AuthController {
     return response;
   }
 
-  @Get('refresh')
-  @UseGuards(JwtRefreshGuard)
-  @ApiBearerAuth()
-  async refresh(@Req() request: any) {
-    const accessTokenCookie = await this.loginUseCaseProxy
-      .getInstance()
-      .getCookieWithJwtToken(request.user?.email);
-    request.res.setHeader('Set-Cookie', accessTokenCookie);
-    return 'Refresh successful';
-  }
+  // @Get('refresh')
+  // @UseGuards(JwtRefreshGuard)
+  // @ApiBearerAuth()
+  // async refresh(@Req() request: any) {
+  //   const accessTokenCookie = await this.loginUseCaseProxy.getInstance().getCookieWithJwtToken(request.user?.email)
+  //   request.res.setHeader('Set-Cookie', accessTokenCookie)
+  //   return 'Refresh successful'
+  // }
 
-  @Post('register')
-  @ApiBearerAuth()
-  @ApiBody({ type: AuthLoginDto })
-  @ApiOperation({ description: 'register' })
-  async register(@Body() user: RegisterDto, @Req() request: any) {
-    const auth = await this.registerUseCaseProxy.getInstance().execute(user);
-    const accessTokenCookie = await this.loginUseCaseProxy
-      .getInstance()
-      .getCookieWithJwtToken(auth.email);
-    const refreshTokenCookie = await this.loginUseCaseProxy
-      .getInstance()
-      .getCookieWithJwtRefreshToken(auth.email);
-    request.res.setHeader('Set-Cookie', [
-      accessTokenCookie,
-      refreshTokenCookie,
-    ]);
-    return 'Successfully registered';
-  }
+  // @Post('register')
+  // @ApiBearerAuth()
+  // @ApiBody({ type: AuthLoginDto })
+  // @ApiOperation({ description: 'register' })
+  // async register(@Body() user: RegisterDto, @Req() request: any) {
+  //   const auth = await this.registerUseCaseProxy.getInstance().execute(user)
+  //   const accessTokenCookie = await this.loginUseCaseProxy.getInstance().getCookieWithJwtToken(auth.email)
+  //   const refreshTokenCookie = await this.loginUseCaseProxy.getInstance().getCookieWithJwtRefreshToken(auth.email)
+  //   request.res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie])
+  //   return 'Successfully registered'
+  // }
 }

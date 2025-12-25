@@ -1,3 +1,3 @@
 export interface DatabaseConfig {
-  getDatabaseUrl(): string
+  getDatabaseUrl(): string;
 }
