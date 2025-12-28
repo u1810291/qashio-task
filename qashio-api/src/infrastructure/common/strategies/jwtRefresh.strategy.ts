@@ -1,5 +1,10 @@
 import { Request } from 'express';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import {
+  ExtractJwt,
+  Strategy,
+  StrategyOptionsWithRequest,
+  JwtFromRequestFunction,
+} from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Inject, Injectable } from '@nestjs/common';
 
@@ -25,20 +30,26 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(
     private readonly logger: LoggerService,
     private readonly exceptionService: ExceptionsService,
   ) {
-    super({
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        (request: Request) => {
-          return request?.cookies?.Refresh;
-        },
-      ]),
+    const extractJwtFromCookie: JwtFromRequestFunction = (
+      request: Request,
+    ): string | null => {
+      return request?.cookies?.Refresh as string | null;
+    };
+
+    const jwtExtractor = ExtractJwt.fromExtractors([extractJwtFromCookie]);
+
+    const options: StrategyOptionsWithRequest = {
+      jwtFromRequest: jwtExtractor,
       secretOrKey: configService.getJwtRefreshSecret(),
       passReqToCallback: true,
-    });
+    };
+
+    super(options);
   }
 
   async validate(request: Request, payload: TokenPayload) {
-    const refreshToken = request.cookies?.Refresh;
-    const user = this.loginUseCaseProxy
+    const refreshToken = request.cookies?.Refresh as string;
+    const user = await this.loginUseCaseProxy
       .getInstance()
       .getUserIfRefreshTokenMatches(refreshToken, payload.email);
     if (!user) {

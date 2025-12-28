@@ -24,10 +24,11 @@ export class PrismaService
     await this.$disconnect();
   }
 
-  async enableShutdownHooks() {
-    process.on('beforeExit', async () => {
-      await this.$disconnect();
-      console.log('Disconnected from database');
+  enableShutdownHooks(): void {
+    process.on('beforeExit', () => {
+      void this.$disconnect().then(() => {
+        console.log('Disconnected from database');
+      });
     });
   }
 }

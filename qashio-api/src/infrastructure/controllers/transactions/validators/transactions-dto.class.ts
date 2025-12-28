@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { TransactionStatus, TransactionType } from '@prisma/client';
 import {
-  IsDateString,
   IsEnum,
   IsNotEmpty,
   IsNumber,

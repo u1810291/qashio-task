@@ -9,7 +9,7 @@ import {
 export class PasswordValidator implements ValidatorConstraintInterface {
   constructor() {}
 
-  async validate(value: string) {
+  validate(value: string): boolean {
     if (
       value?.match(
         /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,

@@ -4,7 +4,6 @@ import { PrismaService } from '@config/prisma/prisma.service';
 
 import { BcryptService } from '@infrastructure/services/bcrypt/bcrypt.service';
 import { PrismaRepository } from '@infrastructure/repositories/prisma.repository';
-import { ExceptionsService } from '@infrastructure/exceptions/exceptions.service';
 import { DatabaseUserRepository } from '@infrastructure/repositories/user.repository';
 
 @Module({

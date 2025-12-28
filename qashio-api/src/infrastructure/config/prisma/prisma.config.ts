@@ -3,5 +3,5 @@ import { PrismaService } from '@config/prisma/prisma.service';
 
 export const prismaInit = (app: INestApplication) => {
   const prisma = app.get<PrismaService>(PrismaService);
-  prisma.enableShutdownHooks();
+  void prisma.enableShutdownHooks();
 };

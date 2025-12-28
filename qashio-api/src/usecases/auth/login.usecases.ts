@@ -17,7 +17,7 @@ export class LoginUseCases {
     private readonly bcryptService: IBcryptService,
   ) {}
 
-  async getCookieWithJwtToken(email: string) {
+  getCookieWithJwtToken(email: string): string {
     this.logger.log(
       'LoginUseCases execute',
       `The user email ${email} have been logged.`,

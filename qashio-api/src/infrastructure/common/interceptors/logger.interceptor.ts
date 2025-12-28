@@ -4,9 +4,10 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { LoggerService } from '../../logger/logger.service';
+import { LoggerService } from '@infrastructure/logger/logger.service';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -15,7 +16,7 @@ export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const now = Date.now();
     const httpContext = context.switchToHttp();
-    const request = httpContext.getRequest();
+    const request = httpContext.getRequest<Request>();
 
     const ip = this.getIP(request);
 
@@ -34,14 +35,14 @@ export class LoggingInterceptor implements NestInterceptor {
     );
   }
 
-  private getIP(request: any): string {
+  private getIP(request: Request): string {
     let ip: string;
     const ipAddr = request.headers['x-forwarded-for'];
     if (ipAddr) {
-      const list = ipAddr.split(',');
+      const list = (typeof ipAddr === 'string' ? ipAddr : ipAddr[0]).split(',');
       ip = list[list.length - 1];
     } else {
-      ip = request.connection.remoteAddress;
+      ip = request.socket.remoteAddress ?? '';
     }
     return ip.replace('::ffff:', '');
   }

@@ -7,6 +7,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Request } from 'express';
 
 export class ResponseFormat<T> {
   @ApiProperty()
@@ -31,10 +32,10 @@ export class ResponseInterceptor<T>
   ): Observable<ResponseFormat<T>> {
     const now = Date.now();
     const httpContext = context.switchToHttp();
-    const request = httpContext.getRequest();
+    const request = httpContext.getRequest<Request>();
 
     return next.handle().pipe(
-      map((data) => ({
+      map((data: T) => ({
         data,
         isArray: Array.isArray(data),
         path: request.path,

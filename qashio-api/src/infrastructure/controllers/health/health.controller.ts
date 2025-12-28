@@ -4,7 +4,7 @@ import { Controller, Get } from '@nestjs/common';
 export class Health {
   constructor() {}
   @Get('')
-  async healthCheck() {
+  healthCheck() {
     return 'Hello world';
   }
 }

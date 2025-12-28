@@ -9,8 +9,10 @@ import {
 export class JwtTokenService implements IJwtService {
   constructor(private readonly jwtService: JwtService) {}
 
-  async checkToken(token: string): Promise<any> {
+  async checkToken(token: string): Promise<IJwtServicePayload> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const decode = await this.jwtService.verifyAsync(token);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return decode;
   }
 

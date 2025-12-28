@@ -57,4 +57,4 @@ async function bootstrap() {
   prismaInit(app);
   await app.listen(8080);
 }
-bootstrap();
+void bootstrap();

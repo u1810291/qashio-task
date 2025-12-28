@@ -19,7 +19,7 @@ export class DatabaseUserRepository
     super(prisma, 'users');
   }
 
-  async updateLastLogin(email: string): Promise<void> {
+  updateLastLogin(): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
@@ -35,11 +35,11 @@ export class DatabaseUserRepository
   }
 
   async getUserByEmail(email: string): Promise<Users | null> {
-    const adminUserEntity = await this.findFirst({
+    const adminUserEntity = (await this.findFirst({
       where: {
         email: email,
       },
-    });
+    })) as Users | null;
     if (!adminUserEntity) {
       return null;
     }
@@ -51,13 +51,13 @@ export class DatabaseUserRepository
   ): Promise<Users> {
     const password = await this.encrypt.hash(user.password);
 
-    const userRegister = await this.create({
+    const userRegister = (await this.create({
       data: {
         name: user.name,
         email: user.email,
         password: password,
       },
-    });
+    })) as Users;
     return userRegister;
   }
 }

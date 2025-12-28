@@ -16,6 +16,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { Request as ExpressRequest, Response } from 'express';
 
 import { IsAuthPresenter } from './auth.presenter';
 import { AuthLoginDto } from './validators/auth-dto.class';
@@ -33,6 +34,11 @@ import { LoginUseCases } from '@usecases/auth/login.usecases';
 import { LogoutUseCases } from '@usecases/auth/logout.usecases';
 import { RegisterUseCases } from '@usecases/auth/register.usecases';
 import { IsAuthenticatedUseCases } from '@usecases/auth/is-authenticated.usecases';
+
+interface RequestWithUser extends ExpressRequest {
+  user?: { email: string };
+  res: Response;
+}
 
 @Controller({
   version: '1',
@@ -61,8 +67,8 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiBody({ type: AuthLoginDto })
   @ApiOperation({ description: 'login' })
-  async login(@Body() auth: AuthLoginDto, @Request() request: any) {
-    const accessTokenCookie = await this.loginUseCaseProxy
+  async login(@Body() auth: AuthLoginDto, @Request() request: RequestWithUser) {
+    const accessTokenCookie = this.loginUseCaseProxy
       .getInstance()
       .getCookieWithJwtToken(auth.email);
     const refreshTokenCookie = await this.loginUseCaseProxy
@@ -78,8 +84,8 @@ export class AuthController {
   @Post('logout')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ description: 'logout' })
-  async logout(@Request() request: any) {
-    const cookie = await this.logoutUseCaseProxy.getInstance().execute();
+  logout(@Request() request: RequestWithUser) {
+    const cookie = this.logoutUseCaseProxy.getInstance().execute();
     request.res.setHeader('Set-Cookie', cookie);
     return 'Logout successful';
   }
@@ -89,10 +95,10 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ description: 'is_authenticated' })
   @ApiResponseType(IsAuthPresenter, false)
-  async isAuthenticated(@Req() request: any) {
+  async isAuthenticated(@Req() request: RequestWithUser) {
     const user = await this.isAuthUseCaseProxy
       .getInstance()
-      .execute(request.user?.email);
+      .execute(request.user?.email ?? '');
     const response = new IsAuthPresenter();
     response.email = user?.email || '';
     return response;
@@ -101,10 +107,10 @@ export class AuthController {
   @Get('refresh')
   @UseGuards(JwtRefreshGuard)
   @ApiBearerAuth()
-  async refresh(@Req() request: any) {
-    const accessTokenCookie = await this.loginUseCaseProxy
+  refresh(@Req() request: RequestWithUser) {
+    const accessTokenCookie = this.loginUseCaseProxy
       .getInstance()
-      .getCookieWithJwtToken(request.user?.email);
+      .getCookieWithJwtToken(request.user?.email ?? '');
     request.res.setHeader('Set-Cookie', accessTokenCookie);
     return 'Refresh successful';
   }
@@ -113,9 +119,9 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiBody({ type: AuthLoginDto })
   @ApiOperation({ description: 'register' })
-  async register(@Body() user: RegisterDto, @Req() request: any) {
+  async register(@Body() user: RegisterDto, @Req() request: RequestWithUser) {
     const auth = await this.registerUseCaseProxy.getInstance().execute(user);
-    const accessTokenCookie = await this.loginUseCaseProxy
+    const accessTokenCookie = this.loginUseCaseProxy
       .getInstance()
       .getCookieWithJwtToken(auth.email);
     const refreshTokenCookie = await this.loginUseCaseProxy

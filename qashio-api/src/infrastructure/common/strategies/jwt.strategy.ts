@@ -8,6 +8,10 @@ import { LoggerService } from '@infrastructure/logger/logger.service';
 import { UseCaseProxy } from '@infrastructure/usecases-proxy/usecases-proxy';
 import { ExceptionsService } from '@infrastructure/exceptions/exceptions.service';
 
+interface JwtPayload {
+  email: string;
+}
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
@@ -19,15 +23,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
-          return request?.cookies?.Authentication;
+          return request?.cookies?.Authentication as string | null;
         },
       ]),
       secretOrKey: process.env.JWT_SECRET,
     });
   }
 
-  async validate(payload: any) {
-    const user = this.loginUseCaseProxy
+  async validate(payload: JwtPayload) {
+    const user = await this.loginUseCaseProxy
       .getInstance()
       .validateUserForJWTStrategy(payload.email);
     if (!user) {
