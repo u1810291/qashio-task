@@ -1,7 +1,7 @@
-import { ExceptionsModule } from '@infrastructure/exceptions/exceptions.module'
-import { Module } from '@nestjs/common'
-import { AuthUseCasesProxyModule } from '@usecases/auth/auth-usecases-proxy.module'
-import { UserUseCasesProxyModule } from '@usecases/user/user-usecase-proxy.module'
+import { ExceptionsModule } from '@infrastructure/exceptions/exceptions.module';
+import { Module } from '@nestjs/common';
+import { AuthUseCasesProxyModule } from '@usecases/auth/auth-usecases-proxy.module';
+import { UserUseCasesProxyModule } from '@usecases/user/user-usecase-proxy.module';
 
 @Module({
   imports: [
@@ -10,4 +10,4 @@ import { UserUseCasesProxyModule } from '@usecases/user/user-usecase-proxy.modul
     ExceptionsModule,
   ],
 })
-export class UseCasesProxyModule { }
+export class UseCasesProxyModule {}

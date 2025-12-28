@@ -1,18 +1,18 @@
-import { Test, TestingModule } from '@nestjs/testing'
-import { EnvironmentConfigService } from './environment-config.service'
+import { Test, TestingModule } from '@nestjs/testing';
+import { EnvironmentConfigService } from './environment-config.service';
 
 describe('EnvironmentConfigService', () => {
-  let service: EnvironmentConfigService
+  let service: EnvironmentConfigService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [EnvironmentConfigService],
-    }).compile()
+    }).compile();
 
-    service = module.get<EnvironmentConfigService>(EnvironmentConfigService)
-  })
+    service = module.get<EnvironmentConfigService>(EnvironmentConfigService);
+  });
 
   it('should be defined', () => {
-    expect(service).toBeDefined()
-  })
-})
+    expect(service).toBeDefined();
+  });
+});
